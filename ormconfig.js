@@ -1,5 +1,5 @@
 const dbConfig = {
-    type: 'postgresql',
+    type: 'postgres',
     database: 'qzqgbckb',
     host: 'tyke.db.elephantsql.com',
     username: 'qzqgbckb',
