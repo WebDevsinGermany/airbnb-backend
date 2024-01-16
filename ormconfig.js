@@ -4,9 +4,25 @@ const dbConfig = {
     host: 'tyke.db.elephantsql.com',
     username: 'qzqgbckb',
     password: 'MW5KJ4IPetGJ8aJ-SXRNVrIzC1NoO1D7',
-    entities: ['**/*.entity.ts'],
     synchronize: false
 }
 
-
+switch (process.env.NODE_ENV) {
+    case 'development':
+        Object.assign(dbConfig,{
+            entities: ['**/*.entity.js'],
+        })
+        break;
+    case 'test':
+        Object.assign(dbConfig,{
+            entities: ['**/*.entity.ts'],
+        })
+        break;
+    case 'production':
+        Object.assign(dbConfig,{
+            entities: ['**/*.entity.js'],
+        })
+    default:
+        throw new Error('unknown environment');
+}
 module.exports = dbConfig;
