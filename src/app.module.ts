@@ -2,13 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import dbConfig from '../ormconfig';
 
-const dbConfig = require('../ormconfig.js');
 @Module({
-  imports: [
-    TypeOrmModule.forRoot(dbConfig)
-  ],
+  imports: [TypeOrmModule.forRoot(dbConfig as any)],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
