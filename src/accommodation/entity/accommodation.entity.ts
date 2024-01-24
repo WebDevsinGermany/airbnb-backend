@@ -13,6 +13,8 @@ import { Street } from './street.entity';
 import { Picture } from './picture.entity';
 import { City } from './city.entity';
 import { AccommodationHasAmenity } from './accommodation_has_amenity.entity';
+import { Wishlist } from './wishlist.entity';
+import { AccommodationHasBookingOption } from './accommodation_has_booking_option.entity';
 
 @Entity()
 export class Accommodation {
@@ -92,4 +94,20 @@ export class Accommodation {
     (accommodation_has_amenity) => accommodation_has_amenity.accommodation,
   )
   accommodation_has_amenities: AccommodationHasAmenity[];
+
+  @OneToMany(() => Wishlist, (wishlist) => wishlist.accommodation)
+  wishlists: Wishlist[];
+
+  @OneToMany(() => Booking, (booking) => booking.accommodation)
+  bookings: Booking[];
+
+  @OneToMany(() => Review, (review) => review.accommodation)
+  reviews: Review[];
+
+  @OneToMany(
+    () => AccommodationHasBookingOption,
+    (accommodation_has_booking_option) =>
+      accommodation_has_booking_option.accommodation,
+  )
+  accommodation_has_booking_options: AccommodationHasBookingOption[];
 }
