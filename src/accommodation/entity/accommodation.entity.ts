@@ -5,6 +5,9 @@ import {
   OneToMany,
   JoinColumn,
   ManyToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { AccommodationType } from './acoommodation_type.entity';
 import { BuildingType } from './building_type.entity';
@@ -115,11 +118,14 @@ export class Accommodation {
   accommodation_has_booking_options: AccommodationHasBookingOption[];
 
   @Column()
+  @CreateDateColumn()
   created_at: Date;
 
   @Column()
+  @UpdateDateColumn()
   updated_at: Date;
 
   @Column()
+  @DeleteDateColumn()
   deleted_at: Date;
 }

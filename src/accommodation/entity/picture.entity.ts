@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
 } from 'typeorm';
 import { Accommodation } from './accommodation.entity';
 
@@ -16,6 +17,7 @@ export class Picture {
   picture_path: string;
 
   @Column()
+  @CreateDateColumn()
   created_at: Date;
 
   @ManyToOne(() => Accommodation, (accommodation) => accommodation.pictures)

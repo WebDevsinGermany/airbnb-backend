@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+} from 'typeorm';
 import { Accommodation } from 'src/accommodation/entity/accommodation.entity';
 import { Wishlist } from 'src/accommodation/entity/wishlist.entity';
 import { Booking } from 'src/booking/entity/booking.entity';
@@ -10,12 +18,15 @@ export class User {
   user_id: number;
 
   @Column()
+  @CreateDateColumn()
   created_at: Date;
 
   @Column()
+  @UpdateDateColumn()
   updated_at: Date;
 
   @Column()
+  @DeleteDateColumn()
   deleted_at: Date;
 
   @Column()
@@ -42,7 +53,7 @@ export class User {
   @Column()
   is_active: boolean;
 
-  @Column()
+  @Column({ type: 'bytea' })
   profile_picture: Buffer;
 
   @Column()

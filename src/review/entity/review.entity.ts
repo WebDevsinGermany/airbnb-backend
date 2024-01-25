@@ -8,6 +8,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToOne,
+  CreateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -16,6 +17,7 @@ export class Review {
   review_id: number;
 
   @Column()
+  @CreateDateColumn()
   created_at: Date;
 
   @Column()

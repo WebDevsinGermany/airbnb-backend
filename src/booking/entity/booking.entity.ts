@@ -5,6 +5,8 @@ import {
   ManyToOne,
   JoinColumn,
   OneToOne,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Accommodation } from 'src/accommodation/entity/accommodation.entity';
 import { User } from 'src/user/entity/user.entity';
@@ -16,9 +18,11 @@ export class Booking {
   booking_id: number;
 
   @Column()
+  @CreateDateColumn()
   created_at: Date;
 
   @Column()
+  @UpdateDateColumn()
   updated_at: Date;
 
   @Column()

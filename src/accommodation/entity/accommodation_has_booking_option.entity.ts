@@ -1,9 +1,12 @@
-import { Entity, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
 import { Accommodation } from './accommodation.entity';
 import { BookingOption } from './booking_option.entity';
 
 @Entity()
 export class AccommodationHasBookingOption {
+  @PrimaryGeneratedColumn()
+  accommodation_bookingoption_id: number;
+
   @ManyToOne(
     () => BookingOption,
     (booking_option) => booking_option.accommodation_has_booking_options,
