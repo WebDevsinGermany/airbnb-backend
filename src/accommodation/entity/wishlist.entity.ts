@@ -4,8 +4,8 @@ import { User } from 'src/user/entity/user.entity';
 
 @Entity()
 export class Wishlist {
-  @PrimaryGeneratedColumn()
-  wishlist_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  wishlist_id: string;
 
   @ManyToOne(() => Accommodation, (accommodation) => accommodation.wishlists)
   @JoinColumn({ name: 'accommodation_id' })

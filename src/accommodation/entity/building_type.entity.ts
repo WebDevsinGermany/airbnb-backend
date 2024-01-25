@@ -3,8 +3,8 @@ import { Accommodation } from './accommodation.entity';
 
 @Entity()
 export class BuildingType {
-  @PrimaryGeneratedColumn()
-  building_type_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  building_type_id: string;
 
   @Column()
   building_type_name: string;

@@ -3,8 +3,8 @@ import { AccommodationHasBookingOption } from './accommodation_has_booking_optio
 
 @Entity()
 export class BookingOption {
-  @PrimaryGeneratedColumn()
-  booking_option_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  booking_option_id: string;
 
   @Column()
   booking_option_name: string;

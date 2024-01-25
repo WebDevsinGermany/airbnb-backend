@@ -11,8 +11,8 @@ import { AccommodationHasAmenity } from './accommodation_has_amenity.entity';
 
 @Entity()
 export class Amenity {
-  @PrimaryGeneratedColumn()
-  amenity_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  amenity_id: string;
 
   @Column()
   amenity_name: string;

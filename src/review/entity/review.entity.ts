@@ -13,8 +13,8 @@ import {
 
 @Entity()
 export class Review {
-  @PrimaryGeneratedColumn()
-  review_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  review_id: string;
 
   @Column()
   @CreateDateColumn()

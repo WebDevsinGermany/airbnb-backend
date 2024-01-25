@@ -11,8 +11,8 @@ import { LocationCategory } from './location_category.entity';
 
 @Entity()
 export class Country {
-  @PrimaryGeneratedColumn()
-  country_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  country_id: string;
 
   @Column()
   country_name: string;

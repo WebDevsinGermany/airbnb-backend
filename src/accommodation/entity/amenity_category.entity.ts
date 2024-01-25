@@ -3,8 +3,8 @@ import { Amenity } from './amenity.entity';
 
 @Entity()
 export class AmenityCategory {
-  @PrimaryGeneratedColumn()
-  amenity_category_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  amenity_category_id: string;
 
   @Column()
   amenity_category_name: string;

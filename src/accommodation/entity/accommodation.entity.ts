@@ -24,8 +24,8 @@ import { Review } from 'src/review/entity/review.entity';
 
 @Entity()
 export class Accommodation {
-  @PrimaryGeneratedColumn()
-  accommodation_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  accommodation_id: string;
 
   @Column()
   title: string;

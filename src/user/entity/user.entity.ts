@@ -14,8 +14,8 @@ import { Review } from 'src/review/entity/review.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  user_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  user_id: string;
 
   @Column()
   @CreateDateColumn()

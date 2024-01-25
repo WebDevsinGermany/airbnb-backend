@@ -4,8 +4,8 @@ import { Accommodation } from './accommodation.entity';
 
 @Entity()
 export class AccommodationHasAmenity {
-  @PrimaryGeneratedColumn()
-  accommodation_amenity_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  accommodation_amenity_id: string;
 
   @ManyToOne(() => Amenity, (amenity) => amenity.accommodation_has_amenities)
   @JoinColumn({ name: 'amenity_id' })

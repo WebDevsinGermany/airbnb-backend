@@ -4,8 +4,8 @@ import { BookingOption } from './booking_option.entity';
 
 @Entity()
 export class AccommodationHasBookingOption {
-  @PrimaryGeneratedColumn()
-  accommodation_bookingoption_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  accommodation_bookingoption_id: string;
 
   @ManyToOne(
     () => BookingOption,

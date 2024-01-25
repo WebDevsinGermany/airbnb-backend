@@ -3,8 +3,8 @@ import { Accommodation } from './accommodation.entity';
 
 @Entity()
 export class City {
-  @PrimaryGeneratedColumn()
-  city_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  city_id: string;
 
   @Column()
   city_name: string;

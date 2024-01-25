@@ -10,8 +10,8 @@ import { Accommodation } from './accommodation.entity';
 
 @Entity()
 export class Picture {
-  @PrimaryGeneratedColumn()
-  picture_id: number;
+  @PrimaryGeneratedColumn('uuid')
+  picture_id: string;
 
   @Column()
   picture_path: string;
