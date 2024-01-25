@@ -15,6 +15,9 @@ import { City } from './city.entity';
 import { AccommodationHasAmenity } from './accommodation_has_amenity.entity';
 import { Wishlist } from './wishlist.entity';
 import { AccommodationHasBookingOption } from './accommodation_has_booking_option.entity';
+import { User } from 'src/user/entity/user.entity';
+import { Booking } from 'src/booking/entity/booking.entity';
+import { Review } from 'src/review/entity/review.entity';
 
 @Entity()
 export class Accommodation {
@@ -110,4 +113,13 @@ export class Accommodation {
       accommodation_has_booking_option.accommodation,
   )
   accommodation_has_booking_options: AccommodationHasBookingOption[];
+
+  @Column()
+  created_at: Date;
+
+  @Column()
+  updated_at: Date;
+
+  @Column()
+  deleted_at: Date;
 }

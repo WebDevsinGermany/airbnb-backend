@@ -1,7 +1,8 @@
 .env.development
 .env.test
-requests.http
 ormconfig.ts
+.eslintrc.js
+.prettierrc
 
 # compiled output
 /dist

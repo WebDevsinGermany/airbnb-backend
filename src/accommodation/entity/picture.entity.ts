@@ -15,6 +15,9 @@ export class Picture {
   @Column()
   picture_path: string;
 
+  @Column()
+  created_at: Date;
+
   @ManyToOne(() => Accommodation, (accommodation) => accommodation.pictures)
   @JoinColumn({ name: 'accommodation_id' })
   accommodation: Accommodation;
