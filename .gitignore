@@ -1,8 +1,6 @@
 .env.development
 .env.test
 ormconfig.ts
-.eslintrc.js
-.prettierrc
 
 # compiled output
 /dist
