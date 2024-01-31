@@ -21,6 +21,7 @@ import { AccommodationHasBookingOption } from './accommodation_has_booking_optio
 import { User } from 'src/user/entity/user.entity';
 import { Booking } from 'src/booking/entity/booking.entity';
 import { Review } from 'src/review/entity/review.entity';
+import { Country } from './country.entity';
 
 @Entity()
 export class Accommodation {
@@ -117,6 +118,10 @@ export class Accommodation {
   )
   accommodation_has_booking_options: AccommodationHasBookingOption[];
 
+  @ManyToOne(() => Country, (country) => country.accommodations)
+  @JoinColumn({ name: 'country_id' })
+  country: Country;
+
   @Column()
   @CreateDateColumn()
   created_at: Date;
@@ -128,4 +133,7 @@ export class Accommodation {
   @Column()
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @Column()
+  review_average: number;
 }

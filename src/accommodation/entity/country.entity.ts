@@ -24,9 +24,6 @@ export class Country {
   @JoinColumn({ name: 'location_category_id' })
   location_category: LocationCategory;
 
-  @OneToMany(
-    () => Accommodation,
-    (accommodation) => accommodation.building_type,
-  )
+  @OneToMany(() => Accommodation, (accommodation) => accommodation.country)
   accommodations: Accommodation[];
 }

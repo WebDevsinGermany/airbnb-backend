@@ -15,6 +15,8 @@ import { Picture } from './entity/picture.entity';
 import { Region } from './entity/region.entity';
 import { Street } from './entity/street.entity';
 import { Wishlist } from './entity/wishlist.entity';
+import { AccommodationController } from './accommodation.controller';
+import { AccommodationService } from './accommodation.service';
 
 @Module({
   imports: [
@@ -36,5 +38,7 @@ import { Wishlist } from './entity/wishlist.entity';
       Wishlist,
     ]),
   ],
+  controllers: [AccommodationController],
+  providers: [AccommodationService],
 })
 export class AccommodationModule {}
