@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Accommodation } from './entity/accommodation.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -31,7 +31,38 @@ export class AccommodationService {
         city: true,
         pictures: true,
       },
+      order: {
+        created_at: 'DESC',
+      },
     });
+    // const user = await this.wishRepo.findOneBy({ user });
+
+    const mapA = new Map(
+      accommodation.map((obj) => [obj.accommodation_id, obj]),
+    );
+    return accommodation;
+  }
+
+  async findOne(id: string) {
+    const accommodation = await this.repo.findOne({
+      where: {
+        accommodation_id: id,
+      },
+      relations: {
+        country: true,
+        city: true,
+        pictures: true,
+        user: true,
+        region: true,
+        street: true,
+        accommodation_type: true,
+        building_type: true,
+        accommodation_has_amenities: true,
+      },
+    });
+    if (!accommodation) {
+      throw new NotFoundException('Accommodation not found.');
+    }
     return accommodation;
   }
 }

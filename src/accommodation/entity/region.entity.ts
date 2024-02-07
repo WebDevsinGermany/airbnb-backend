@@ -4,10 +4,10 @@ import { Accommodation } from './accommodation.entity';
 @Entity()
 export class Region {
   @PrimaryGeneratedColumn('uuid')
-  country_id: string;
+  region_id: string;
 
   @Column()
-  country_name: string;
+  region_name: string;
 
   @OneToMany(() => Accommodation, (accommodation) => accommodation.region)
   accommodations: Accommodation[];
