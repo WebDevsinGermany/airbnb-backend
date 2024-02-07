@@ -1,6 +1,7 @@
 .env.development
 .env.test
 ormconfig.ts
+requests.http
 
 # compiled output
 /dist
