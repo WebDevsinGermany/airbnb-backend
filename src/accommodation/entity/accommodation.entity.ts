@@ -122,15 +122,12 @@ export class Accommodation {
   @JoinColumn({ name: 'country_id' })
   country: Country;
 
-  @Column()
   @CreateDateColumn()
   created_at: Date;
 
-  @Column()
   @UpdateDateColumn()
   updated_at: Date;
 
-  @Column()
   @DeleteDateColumn()
   deleted_at: Date;
 

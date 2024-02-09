@@ -19,7 +19,7 @@ export class AccommodationController {
   @Get('filteroption')
   getFilterOption() {}
 
-  @Get('room/:id')
+  @Get('rooms/:id')
   getRoom(@Param('id') id: string) {
     return this.accommodationService.findOne(id);
   }

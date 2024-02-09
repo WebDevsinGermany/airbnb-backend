@@ -33,11 +33,9 @@ export class Booking {
   @Column()
   total_price: number;
 
-  @Column()
   @CreateDateColumn()
   created_at: Date;
 
-  @Column()
   @UpdateDateColumn()
   updated_at: Date;
 
