@@ -16,8 +16,7 @@ export class Review {
   @PrimaryGeneratedColumn('uuid')
   review_id: string;
 
-  @Column()
-  @CreateDateColumn()
+@CreateDateColumn()
   created_at: Date;
 
   @Column()
@@ -31,7 +30,7 @@ export class Review {
   accommodation: Accommodation;
 
   @ManyToOne(() => User, (user) => user.reviews)
-  @JoinColumn({ name: 'accommodation_id' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @OneToOne(() => Booking, (booking) => booking.review)
