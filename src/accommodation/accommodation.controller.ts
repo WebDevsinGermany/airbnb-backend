@@ -6,8 +6,10 @@ import { Request } from 'express';
 export class AccommodationController {
   constructor(private accommodationService: AccommodationService) {}
   @Get()
-  getList(@Req() request: Request) {
-    return this.accommodationService.getList();
+  getList() {
+    //  @CurrentUserId() userId : string
+    //  '96170b59-c0c4-412b-8d18-62eca8a7a665'
+    return this.accommodationService.getList(undefined);
   }
 
   @Post('filtering')
