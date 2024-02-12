@@ -8,12 +8,23 @@ import { User } from 'src/user/entity/user.entity';
 @Injectable()
 export class AccommodationService {
   constructor(
-    @InjectRepository(Accommodation) private repo: Repository<Accommodation>,
+    @InjectRepository(Accommodation)
+    private accommodationRepo: Repository<Accommodation>,
     @InjectRepository(Wishlist) private wishRepo: Repository<Wishlist>,
   ) {}
 
-  async getList() {
-    const accommodation = await this.repo.find({
+  async getList(user_id: string) {
+    const wishlistSelection = user_id
+      ? {
+          wishlist_id: true,
+          user: {
+            user_id: true,
+          },
+        }
+      : false;
+    const wishlistRelation = user_id ? { user: true } : false;
+
+    const accommodations = await this.accommodationRepo.find({
       select: {
         accommodation_id: true,
         price: true,
@@ -25,26 +36,52 @@ export class AccommodationService {
         },
         pictures: true,
         review_average: true,
+        wishlists: wishlistSelection,
       },
       relations: {
         country: true,
         city: true,
         pictures: true,
+        wishlists: wishlistRelation,
       },
       order: {
         created_at: 'DESC',
       },
     });
-    // const user = await this.wishRepo.findOneBy({ user });
+    if (user_id) {
+      const wishlists = await this.wishRepo.find({
+        relations: {
+          accommodation: true,
+        },
+        where: {
+          user: {
+            user_id,
+          },
+        },
+      });
 
-    const mapA = new Map(
-      accommodation.map((obj) => [obj.accommodation_id, obj]),
-    );
-    return accommodation;
+      const mapA = new Map(
+        accommodations.map((obj) => [obj.accommodation_id, obj]),
+      );
+
+      for (const wishlist of wishlists) {
+        if (mapA.get(wishlist.accommodation.accommodation_id)) {
+          const accObj = mapA.get(wishlist.accommodation.accommodation_id);
+          accObj.wishlists = [
+            {
+              wishlist_id: wishlist.wishlist_id,
+              accommodation: undefined,
+              user: undefined,
+            },
+          ];
+        }
+      }
+    }
+    return accommodations;
   }
 
   async findOne(id: string) {
-    const accommodation = await this.repo.findOne({
+    const accommodation = await this.accommodationRepo.findOne({
       where: {
         accommodation_id: id,
       },
