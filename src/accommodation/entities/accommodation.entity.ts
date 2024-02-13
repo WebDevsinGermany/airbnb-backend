@@ -131,6 +131,8 @@ export class Accommodation {
   @DeleteDateColumn()
   deleted_at: Date;
 
-  @Column()
+  @Column({
+    type: 'float',
+  })
   review_average: number;
 }

@@ -1,5 +1,5 @@
 import { Booking } from 'src/booking/entity/booking.entity';
-import { Accommodation } from 'src/accommodation/entity/accommodation.entity';
+import { Accommodation } from 'src/accommodation/entities/accommodation.entity';
 import { User } from 'src/user/entity/user.entity';
 import {
   Entity,

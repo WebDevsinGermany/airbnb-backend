@@ -8,7 +8,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Accommodation } from 'src/accommodation/entity/accommodation.entity';
+import { Accommodation } from 'src/accommodation/entities/accommodation.entity';
 import { User } from 'src/user/entity/user.entity';
 import { Review } from 'src/review/entity/review.entity';
 import { BookingStatus } from '../booking-status.enum';
