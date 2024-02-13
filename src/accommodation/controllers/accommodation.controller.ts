@@ -1,6 +1,6 @@
 import { Controller, Get, Req, Post, Body, Param } from '@nestjs/common';
-import { AccommodationService } from './accommodation.service';
-import { Request } from 'express';
+import { AccommodationService } from '../services/accommodation.service';
+import { FilteringDto } from '../dtos/filtering.dto';
 
 @Controller('/')
 export class AccommodationController {
@@ -9,11 +9,13 @@ export class AccommodationController {
   getList() {
     //  @CurrentUserId() userId : string
     //  '96170b59-c0c4-412b-8d18-62eca8a7a665'
-    return this.accommodationService.getList(undefined);
+    return this.accommodationService.getList(
+      '96170b59-c0c4-412b-8d18-62eca8a7a665',
+    );
   }
 
   @Post('filtering')
-  getListByFilter() {}
+  getListByFilter(@Body() filtering: FilteringDto) {}
 
   @Post('filter')
   getAvailableListNumber() {}

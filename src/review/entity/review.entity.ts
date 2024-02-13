@@ -1,6 +1,6 @@
 import { Booking } from 'src/booking/entity/booking.entity';
-import { Accommodation } from 'src/accommodation/entity/accommodation.entity';
-import { User } from 'src/user/entities/user.entity';
+import { Accommodation } from 'src/accommodation/entities/accommodation.entity';
+import { User } from 'src/user/entity/user.entity';
 import {
   Entity,
   Column,
@@ -16,7 +16,7 @@ export class Review {
   @PrimaryGeneratedColumn('uuid')
   review_id: string;
 
-@CreateDateColumn()
+  @CreateDateColumn()
   created_at: Date;
 
   @Column()

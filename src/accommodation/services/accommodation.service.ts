@@ -1,9 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
-import { Accommodation } from './entity/accommodation.entity';
+import { Between, Repository } from 'typeorm';
+import { Accommodation } from '../entities/accommodation.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Wishlist } from './entity/wishlist.entity';
+import { Wishlist } from '../entities/wishlist.entity';
 import { User } from 'src/user/entity/user.entity';
+import { FilteringDto } from '../dtos/filtering.dto';
 
 @Injectable()
 export class AccommodationService {
@@ -80,13 +81,30 @@ export class AccommodationService {
     return accommodations;
   }
 
+  getListByFilter(filtering: FilteringDto) {
+    this.accommodationRepo.find({
+      where: {
+        accommodation_type: {
+          accommodation_type_id: filtering.accommodation_type_id,
+        },
+        price: Between(filtering.price_min, filtering.price_max),
+        room_number: filtering.room_number,
+      },
+    });
+  }
+
   async findOne(id: string) {
+    /**
+     * review data, review count
+     */
     const accommodation = await this.accommodationRepo.findOne({
       where: {
         accommodation_id: id,
       },
       relations: {
-        country: true,
+        country: {
+          location_category: true,
+        },
         city: true,
         pictures: true,
         user: true,
@@ -95,6 +113,7 @@ export class AccommodationService {
         accommodation_type: true,
         building_type: true,
         accommodation_has_amenities: true,
+        accommodation_has_booking_options: true,
       },
     });
     if (!accommodation) {
