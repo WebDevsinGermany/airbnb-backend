@@ -29,7 +29,7 @@ export class JwtAuthGuard extends AuthGuard(ACCESS_TOKEN_STRATEGY) {
 
   handleRequest<TUser>(_: any, user: TUser): TUser {
     if (!user) {
-      throw new UnauthorizedException('🙅🏻 접근 권한이 없습니다.');
+      throw new UnauthorizedException('🙅🏻 Access Denied.');
     }
     return user;
   }

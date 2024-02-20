@@ -45,7 +45,7 @@ export class UserController {
     );
   }
 
-  @Post('signout')
+  @Post('/signout')
   @HttpCode(HttpStatus.OK)
   signout(@CurrentUserId() userId: string): Promise<string> {
     return this.authService.signout(userId);
@@ -60,13 +60,10 @@ export class UserController {
   @Get('/:user_id')
   @HttpCode(HttpStatus.OK)
   async findUserById(@Param('user_id') id: string) {
-    const user = await this.userService.findOneByAttr(
-      'user_id',
-      parseInt(id, 10),
-    );
+    const user = await this.userService.findOneByUserId(id);
 
     if (user === null) {
-      throw new NotFoundException('👻 유저가 존재하지 않습니다.');
+      throw new NotFoundException('👻 User does not exist.');
     }
 
     return user;

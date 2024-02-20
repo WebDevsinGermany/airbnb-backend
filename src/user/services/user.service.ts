@@ -10,8 +10,12 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async findOneByAttr(attr: string, value: any): Promise<User | null> {
-    return await this.userRepository.findOne({ where: { [attr]: value } });
+  async findOneByUserId(id: any): Promise<User | null> {
+    return await this.userRepository.findOneBy({ user_id: id });
+  }
+
+  async findOneByEmail(email: string): Promise<User | null> {
+    return await this.userRepository.findOneBy({ email });
   }
 
   async create({ email, password, ...rest }: Partial<User>) {
@@ -25,10 +29,10 @@ export class UserService {
   }
 
   async update(id: number, attrs: Partial<User>) {
-    const user = await this.findOneByAttr('user_id', id);
+    const user: User = await this.findOneByUserId(id);
 
     if (!user) {
-      throw new NotFoundException('👻 유저가 존재하지 않습니다.');
+      throw new NotFoundException('👻 User does not exist.');
     }
 
     Object.assign(user, attrs);
@@ -37,10 +41,10 @@ export class UserService {
   }
 
   async remove(id: number) {
-    const user = await this.findOneByAttr('user_id', id);
+    const user: User = await this.findOneByUserId(id);
 
     if (!user) {
-      throw new NotFoundException('👻 유저가 존재하지 않습니다.');
+      throw new NotFoundException('👻 User does not exist.');
     }
 
     return await this.userRepository.softRemove(user);

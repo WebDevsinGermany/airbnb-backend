@@ -25,7 +25,7 @@ export class AccessTokenStrategy extends PassportStrategy(
   async validate(payload: JwtPayload): Promise<User> {
     const { email } = payload;
 
-    const user: User = await this.userService.findOneByAttr('email', email);
+    const user: User = await this.userService.findOneByEmail(email);
 
     if (!user) {
       throw new UnauthorizedException();

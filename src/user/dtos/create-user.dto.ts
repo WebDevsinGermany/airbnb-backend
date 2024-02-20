@@ -22,7 +22,7 @@ export class CreateUserDto {
   @IsString()
   is_host: boolean;
 
-  // 🚨 buffer 타입을 어떻게 검증하지?
+  // 🚨 need to verify buffer typed value
   @IsOptional()
   profile_picture: Buffer;
 
