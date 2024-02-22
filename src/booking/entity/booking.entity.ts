@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Accommodation } from 'src/accommodation/entities/accommodation.entity';
-import { User } from 'src/user/entity/user.entity';
+import { User } from 'src/user/entities/user.entity';
 import { Review } from 'src/review/entity/review.entity';
 import { BookingStatus } from '../booking-status.enum';
 
