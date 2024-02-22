@@ -13,9 +13,11 @@ export class AccommodationController {
       '96170b59-c0c4-412b-8d18-62eca8a7a665',
     );
   }
-
+  //  use filter
   @Post('filtering')
-  getListByFilter(@Body() filtering: FilteringDto) {}
+  getListByFilter(@Body() filtering: FilteringDto) {
+    return this.accommodationService.getListByFilter(filtering);
+  }
 
   @Post('filter')
   getAvailableListNumber() {}
