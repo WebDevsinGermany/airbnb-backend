@@ -80,16 +80,17 @@ export class AccommodationService {
     return accommodations;
   }
 
-  async getListByFilter(filtering: FilteringDto, user_id: string | boolean) {
-    const wishlistSelection = user_id
-      ? {
-          wishlist_id: true,
-          user: {
-            user_id: true,
-          },
-        }
-      : false;
-    const wishlistRelation = user_id ? { user: true } : false;
+  async getListByFilter(filtering: FilteringDto, user_id: string) {
+    const wishlistSelection =
+      user_id !== null
+        ? {
+            wishlist_id: true,
+            user: {
+              user_id: true,
+            },
+          }
+        : false;
+    const wishlistRelation = user_id !== null ? { user: true } : false;
 
     const whereCondition: any = {
       select: {

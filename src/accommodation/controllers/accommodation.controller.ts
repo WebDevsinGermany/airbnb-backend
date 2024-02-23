@@ -21,7 +21,7 @@ export class AccommodationController {
   @Post('filtering')
   getListByFilter(
     @Body() filtering: FilteringDto,
-    @CurrentUserId() user_id: string | boolean,
+    @CurrentUserId() user_id: string,
   ) {
     return this.accommodationService.getListByFilter(filtering, user_id);
   }
