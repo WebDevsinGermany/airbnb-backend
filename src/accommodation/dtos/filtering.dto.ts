@@ -1,12 +1,14 @@
-import { IsInt, IsString, ValidateNested } from 'class-validator';
+import { IsInt, IsString, ValidateNested, IsOptional } from 'class-validator';
 import { Amenity } from '../entities/amenity.entity';
 import { BookingOption } from '../entities/booking_option.entity';
 
 export class FilteringDto {
   @IsString()
+  @IsOptional()
   accommodation_type_id: string;
 
   @IsString()
+  @IsOptional()
   accommodation_type_name: string;
 
   @IsInt()
@@ -28,6 +30,7 @@ export class FilteringDto {
   building_type_id: string;
 
   @IsString()
+  @IsOptional()
   building_type_name: string;
 
   @ValidateNested()
