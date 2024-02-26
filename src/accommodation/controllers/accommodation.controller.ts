@@ -10,7 +10,7 @@ export class AccommodationController {
   @Get()
   @Public()
   getList() {
-    //  @CurrentUserId() userId : string
+    //  @CurrentUserId() user_id : string
     //  '96170b59-c0c4-412b-8d18-62eca8a7a665'
     return this.accommodationService.getList(
       '96170b59-c0c4-412b-8d18-62eca8a7a665',
@@ -24,6 +24,12 @@ export class AccommodationController {
     @CurrentUserId() user_id: string,
   ) {
     return this.accommodationService.getListByFilter(filtering, user_id);
+  }
+
+  @Public()
+  @Get('filteroptions')
+  getFilterOptions() {
+    return this.accommodationService.getFilterOptions();
   }
 
   @Public()

@@ -4,6 +4,8 @@ import { Accommodation } from '../entities/accommodation.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Wishlist } from '../entities/wishlist.entity';
 import { FilteringDto } from '../dtos/filtering.dto';
+import { Amenity } from '../entities/amenity.entity';
+import { BookingOption } from '../entities/booking_option.entity';
 
 @Injectable()
 export class AccommodationService {
@@ -11,6 +13,9 @@ export class AccommodationService {
     @InjectRepository(Accommodation)
     private accommodationRepo: Repository<Accommodation>,
     @InjectRepository(Wishlist) private wishRepo: Repository<Wishlist>,
+    @InjectRepository(Amenity) private amenityRepo: Repository<Amenity>,
+    @InjectRepository(BookingOption)
+    private bookoptionRepo: Repository<BookingOption>,
   ) {}
 
   async getList(user_id: string) {
@@ -80,6 +85,12 @@ export class AccommodationService {
     return accommodations;
   }
 
+  async getFilterOptions() {
+    const amenities = await this.amenityRepo.find();
+    const bookoptions = await this.bookoptionRepo.find();
+    return { amenity: [...amenities], bookoptions: [...bookoptions] };
+  }
+
   async getListByFilter(filtering: FilteringDto, user_id: string) {
     const wishlistSelection =
       user_id !== null
@@ -145,7 +156,66 @@ export class AccommodationService {
       whereCondition.where.building_type.building_type_id =
         filtering.building_type_id;
     }
-    const firstFiltered = await this.accommodationRepo.find(whereCondition);
+    let firstFiltered = await this.accommodationRepo.find(whereCondition);
+
+    const requestedAmenities = filtering.amenity.map(
+      (amenity) => amenity.amenity_id,
+    );
+
+    const requestedBookOptions = filtering.booking_option.map(
+      (option) => option.booking_option_id,
+    );
+
+    firstFiltered = firstFiltered.filter((accommodation) => {
+      const accommodationAmenities = new Set(
+        accommodation.accommodation_has_amenities.map(
+          (amenity) => amenity.amenity.amenity_id,
+        ),
+      );
+      const accommodationBookOptions = new Set(
+        accommodation.accommodation_has_booking_options.map(
+          (option) => option.booking_option.booking_option_id,
+        ),
+      );
+      return (
+        requestedAmenities.every((amenity) =>
+          accommodationAmenities.has(amenity),
+        ) &&
+        requestedBookOptions.every((option) =>
+          accommodationBookOptions.has(option),
+        )
+      );
+    });
+
+    if (user_id) {
+      const wishlists = await this.wishRepo.find({
+        relations: {
+          accommodation: true,
+        },
+        where: {
+          user: {
+            user_id,
+          },
+        },
+      });
+
+      const mapA = new Map(
+        firstFiltered.map((obj) => [obj.accommodation_id, obj]),
+      );
+
+      for (const wishlist of wishlists) {
+        if (mapA.get(wishlist.accommodation.accommodation_id)) {
+          const accObj = mapA.get(wishlist.accommodation.accommodation_id);
+          accObj.wishlists = [
+            {
+              wishlist_id: wishlist.wishlist_id,
+              accommodation: undefined,
+              user: undefined,
+            },
+          ];
+        }
+      }
+    }
 
     return firstFiltered;
   }
@@ -169,8 +239,12 @@ export class AccommodationService {
         street: true,
         accommodation_type: true,
         building_type: true,
-        accommodation_has_amenities: true,
-        accommodation_has_booking_options: true,
+        accommodation_has_amenities: {
+          amenity: true,
+        },
+        accommodation_has_booking_options: {
+          booking_option: true,
+        },
       },
     });
     if (!accommodation) {

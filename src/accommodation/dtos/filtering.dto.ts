@@ -1,6 +1,4 @@
-import { IsInt, IsString, ValidateNested, IsOptional } from 'class-validator';
-import { Amenity } from '../entities/amenity.entity';
-import { BookingOption } from '../entities/booking_option.entity';
+import { IsInt, IsString, IsOptional, IsArray } from 'class-validator';
 
 export class FilteringDto {
   @IsString()
@@ -33,9 +31,19 @@ export class FilteringDto {
   @IsOptional()
   building_type_name: string;
 
-  @ValidateNested()
-  amenity: Amenity[];
+  @IsArray()
+  amenity: AmenityDto[];
 
-  @ValidateNested()
-  booking_option: BookingOption[];
+  @IsArray()
+  booking_option: BookingOpDto[];
+}
+
+export class AmenityDto {
+  @IsString()
+  amenity_id: string;
+}
+
+export class BookingOpDto {
+  @IsString()
+  booking_option_id: string;
 }
