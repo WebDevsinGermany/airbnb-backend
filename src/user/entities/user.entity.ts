@@ -1,7 +1,7 @@
 import { IsOptional } from 'class-validator';
 import { Accommodation } from 'src/accommodation/entities/accommodation.entity';
 import { Wishlist } from 'src/accommodation/entities/wishlist.entity';
-import { Booking } from 'src/booking/entity/booking.entity';
+import { Booking } from 'src/booking/entities/booking.entity';
 import { Review } from 'src/review/entity/review.entity';
 import {
   Entity,
