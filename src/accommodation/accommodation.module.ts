@@ -17,8 +17,7 @@ import { Street } from './entities/street.entity';
 import { Wishlist } from './entities/wishlist.entity';
 import { AccommodationController } from './controllers/accommodation.controller';
 import { AccommodationService } from './services/accommodation.service';
-import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
-import { APP_GUARD } from '@nestjs/core';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -41,12 +40,6 @@ import { APP_GUARD } from '@nestjs/core';
     ]),
   ],
   controllers: [AccommodationController],
-  providers: [
-    AccommodationService,
-    {
-      provide: APP_GUARD,
-      useClass: JwtAuthGuard,
-    },
-  ],
+  providers: [AccommodationService, JwtService],
 })
 export class AccommodationModule {}

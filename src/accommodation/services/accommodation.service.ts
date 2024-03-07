@@ -4,8 +4,8 @@ import { Accommodation } from '../entities/accommodation.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Wishlist } from '../entities/wishlist.entity';
 import { FilteringDto } from '../dtos/filtering.dto';
-import { Amenity } from '../entities/amenity.entity';
 import { BookingOption } from '../entities/booking_option.entity';
+import { AmenityCategory } from '../entities/amenity_category.entity';
 
 @Injectable()
 export class AccommodationService {
@@ -13,9 +13,10 @@ export class AccommodationService {
     @InjectRepository(Accommodation)
     private accommodationRepo: Repository<Accommodation>,
     @InjectRepository(Wishlist) private wishRepo: Repository<Wishlist>,
-    @InjectRepository(Amenity) private amenityRepo: Repository<Amenity>,
     @InjectRepository(BookingOption)
     private bookoptionRepo: Repository<BookingOption>,
+    @InjectRepository(AmenityCategory)
+    private amenityCategoryRepo: Repository<AmenityCategory>,
   ) {}
 
   async getList(user_id: string) {
@@ -53,42 +54,22 @@ export class AccommodationService {
         created_at: 'DESC',
       },
     });
-    if (user_id) {
-      const wishlists = await this.wishRepo.find({
-        relations: {
-          accommodation: true,
-        },
-        where: {
-          user: {
-            user_id,
-          },
-        },
-      });
+    await this.hasWishlist(user_id, accommodations);
 
-      const mapA = new Map(
-        accommodations.map((obj) => [obj.accommodation_id, obj]),
-      );
-
-      for (const wishlist of wishlists) {
-        if (mapA.get(wishlist.accommodation.accommodation_id)) {
-          const accObj = mapA.get(wishlist.accommodation.accommodation_id);
-          accObj.wishlists = [
-            {
-              wishlist_id: wishlist.wishlist_id,
-              accommodation: undefined,
-              user: undefined,
-            },
-          ];
-        }
-      }
-    }
     return accommodations;
   }
 
   async getFilterOptions() {
-    const amenities = await this.amenityRepo.find();
+    const amenities = await this.amenityCategoryRepo.find({
+      relations: {
+        amenities: true,
+      },
+    });
     const bookoptions = await this.bookoptionRepo.find();
-    return { amenity: [...amenities], bookoptions: [...bookoptions] };
+    return {
+      amenity_cateogries: [...amenities],
+      bookoptions: [...bookoptions],
+    };
   }
 
   async getListByFilter(filtering: FilteringDto, user_id: string) {
@@ -187,37 +168,15 @@ export class AccommodationService {
       );
     });
 
-    if (user_id) {
-      const wishlists = await this.wishRepo.find({
-        relations: {
-          accommodation: true,
-        },
-        where: {
-          user: {
-            user_id,
-          },
-        },
-      });
-
-      const mapA = new Map(
-        firstFiltered.map((obj) => [obj.accommodation_id, obj]),
-      );
-
-      for (const wishlist of wishlists) {
-        if (mapA.get(wishlist.accommodation.accommodation_id)) {
-          const accObj = mapA.get(wishlist.accommodation.accommodation_id);
-          accObj.wishlists = [
-            {
-              wishlist_id: wishlist.wishlist_id,
-              accommodation: undefined,
-              user: undefined,
-            },
-          ];
-        }
-      }
-    }
+    await this.hasWishlist(user_id, firstFiltered);
 
     return firstFiltered;
+  }
+
+  async getAmountOfFilteredList(filtering: FilteringDto) {
+    const filteredListCount = (await this.getListByFilter(filtering, null))
+      .length;
+    return filteredListCount;
   }
 
   async findOne(id: string) {
@@ -251,5 +210,32 @@ export class AccommodationService {
       throw new NotFoundException('Accommodation not found.');
     }
     return accommodation;
+  }
+
+  // interne method
+  async hasWishlist(user_id: string, accommodation: Accommodation[]) {
+    if (user_id) {
+      const wishlists = await this.wishRepo.find({
+        relations: {
+          accommodation: true,
+        },
+        where: {
+          user: {
+            user_id,
+          },
+        },
+      });
+
+      const mapA = new Map(
+        accommodation.map((obj) => [obj.accommodation_id, obj]),
+      );
+
+      for (const wishlist of wishlists) {
+        const accObj = mapA.get(wishlist.accommodation.accommodation_id);
+        if (accObj) {
+          accObj.hasWishlist = true;
+        }
+      }
+    }
   }
 }
