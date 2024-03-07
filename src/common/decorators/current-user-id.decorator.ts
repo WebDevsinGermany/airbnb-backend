@@ -7,6 +7,6 @@ export const CurrentUserId = createParamDecorator(
 
     const user: User = request.user;
 
-    return user.user_id;
+    return user?.user_id || null;
   },
 );

@@ -8,7 +8,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Accommodation } from 'src/accommodation/entity/accommodation.entity';
+import { Accommodation } from 'src/accommodation/entities/accommodation.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Review } from 'src/review/entity/review.entity';
 import { BookingStatus } from '../booking-status.enum';
@@ -33,11 +33,9 @@ export class Booking {
   @Column()
   total_price: number;
 
-  @Column()
   @CreateDateColumn()
   created_at: Date;
 
-  @Column()
   @UpdateDateColumn()
   updated_at: Date;
 

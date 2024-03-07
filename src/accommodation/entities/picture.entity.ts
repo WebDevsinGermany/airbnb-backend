@@ -16,7 +16,6 @@ export class Picture {
   @Column()
   picture_path: string;
 
-  @Column()
   @CreateDateColumn()
   created_at: Date;
 

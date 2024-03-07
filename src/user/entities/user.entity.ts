@@ -1,6 +1,6 @@
 import { IsOptional } from 'class-validator';
-import { Accommodation } from 'src/accommodation/entity/accommodation.entity';
-import { Wishlist } from 'src/accommodation/entity/wishlist.entity';
+import { Accommodation } from 'src/accommodation/entities/accommodation.entity';
+import { Wishlist } from 'src/accommodation/entities/wishlist.entity';
 import { Booking } from 'src/booking/entity/booking.entity';
 import { Review } from 'src/review/entity/review.entity';
 import {
