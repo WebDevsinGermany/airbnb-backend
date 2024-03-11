@@ -8,7 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 import { UserService } from 'src/user/services';
 import { User } from 'src/user/entities/user.entity';
-import { Accommodation } from 'src/accommodation/entity/accommodation.entity';
+import { Accommodation } from 'src/accommodation/entities/accommodation.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Booking, User, Accommodation])],
