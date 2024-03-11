@@ -21,6 +21,7 @@ import { AccommodationHasBookingOption } from './accommodation_has_booking_optio
 import { Booking } from 'src/booking/entity/booking.entity';
 import { Review } from 'src/review/entity/review.entity';
 import { User } from 'src/user/entities/user.entity';
+import { Country } from './country.entity';
 
 @Entity()
 export class Accommodation {
@@ -104,6 +105,8 @@ export class Accommodation {
   @OneToMany(() => Wishlist, (wishlist) => wishlist.accommodation)
   wishlists: Wishlist[];
 
+  hasWishlist: boolean = false;
+
   @OneToMany(() => Booking, (booking) => booking.accommodation)
   bookings: Booking[];
 
@@ -117,15 +120,21 @@ export class Accommodation {
   )
   accommodation_has_booking_options: AccommodationHasBookingOption[];
 
-  @Column()
+  @ManyToOne(() => Country, (country) => country.accommodations)
+  @JoinColumn({ name: 'country_id' })
+  country: Country;
+
   @CreateDateColumn()
   created_at: Date;
 
-  @Column()
   @UpdateDateColumn()
   updated_at: Date;
 
-  @Column()
   @DeleteDateColumn()
   deleted_at: Date;
+
+  @Column({
+    type: 'float',
+  })
+  review_average: number;
 }

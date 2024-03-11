@@ -1,0 +1,993 @@
+openapi: 3.0.3
+info:
+  title: Airbnb Clone Project - OpenAPI 3.0
+  description: >-
+    This is Airbnb Cone Coding Proejct by DE Web team
+  termsOfService: https://github.com/WebDevsinGermany
+  contact:
+    url: https://github.com/WebDevsinGermany
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about this project
+  url: https://github.com/WebDevsinGermany
+servers:
+  - url: https://petstore3.swagger.io/api/v3			# Change it later
+tags:
+  - name: room
+    description: Everything about Rooms
+    externalDocs:
+      description: Find out more
+      url: https://www.airbnb.com/
+  - name: booking
+    description: Access to Airbnb Bookings
+    externalDocs:
+      description: Find out more about Bookings
+      url: https://www.airbnb.com/trips/v1
+  - name: user
+    description: Operations about user
+  - name: review
+    description: user Reviews
+  - name: auth
+    description: authorization
+
+
+paths:
+  /auth/signin:
+    post:
+      tags:
+        - auth
+      summary: Logs user into the system
+      description: ''
+      operationId: signinUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200' :
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  access_token: 
+                    type: string
+                  refresh_token:
+                    type: string
+                  user_id:
+                    type: string
+        '400':
+          description: Invalid username/password supplied
+  /auth/signup:
+    post:
+      tags:
+        - auth
+      summary: Signs user up
+      description: ''
+      operationId: signupUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+                date_of_birth:
+                  type: string
+                last_name:
+                  type: string
+                first_name:
+                  type: string
+                phone_number:
+                  type: string
+                is_host:
+                  type: boolean
+                  default: false
+                profile_picture:
+                  type: string
+                nationality:
+                  type: string
+      responses:
+        '200' :
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+  /auth/signout:
+    post:
+      tags:
+        - auth
+      summary: Logs out current logged in user session
+      description: ''
+      operationId: signoutUser
+      security:
+        - bearerAuth: []
+      responses:
+        '200' :
+          description: successful operation
+  /user/{userid}:
+    get:
+      tags:
+        - user
+      summary: Get user by user name
+      description: ''
+      operationId: getUserById
+      parameters:
+        - name: userid
+          in: path
+          description: 'The userid that needs to be fetched.'
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+        '400':
+          description: Invalid userid supplied
+        '404':
+          description: User not found
+    put:
+      tags:
+        - user
+      summary: Update user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      parameters:
+        - name: userid
+          in: path
+          description: name that need to be deleted
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Update an existent user in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        default:
+          description: successful operation
+    delete:
+      tags:
+        - user
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      parameters:
+        - name: userid
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        '400':
+          description: Invalid username supplied
+        '404':
+          description: User not found
+  /review:
+    post:
+      tags:
+        - review
+      summary: create a new review
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                booking_id:
+                  type: integer
+                accommodation_id:
+                  type: integer
+                user_id:
+                  type: integer
+                rating:
+                  type: integer
+                comment:
+                  type: string
+      responses:
+        '200' :
+          description: successful operation
+        '400':
+          description: Invalid username/password supplied
+  /review/user/{id}:
+    get:
+      tags:
+        - review
+      summary: Get reviews by userid
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/review'
+        '400':
+          description: Invalid userid supplied
+        '404':
+          description: User not found
+  /review/booking/{id}:
+    get:
+      tags:
+        - review
+      summary: Get reviews by bookingid
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/review'
+        '400':
+          description: Invalid userid supplied
+        '404':
+          description: User not found
+  /review/accommodation/{id}:
+    get:
+      tags:
+        - review
+      summary: Get reviews by accommodationid
+      description: ''
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  average:
+                    type: integer
+                  list:
+                    type: array
+                    items: 
+                      $ref: '#/components/schemas/review'
+        '400':
+          description: Invalid userid supplied
+        '404':
+          description: User not found
+
+  /book:
+    get:
+      tags:
+        - booking
+      summary: View 'Request to book' page
+      description: View 'Request to book' page
+      operationId: getBookPage
+      parameters:
+        - name: accommodation_id
+          in: path
+          description: ID of Accommodation
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: check_in_date
+          in: query
+          description: check_in_date
+          schema:
+            type: string
+            format: date
+        - name: check_out_date
+          in: query
+          description: check_out_date
+          schema:
+            type: string
+            format: date
+        - name: number_of_guests
+          in: query
+          description: number_of_guests
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Accommodation not found
+    post:
+      tags:
+        - booking
+      summary: Reserve a stay
+      description: Reserve a stay
+      operationId: createBooking
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Booking'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Booking'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '405':
+          description: Invalid input
+  /bookings:
+    get:
+      tags:
+        - booking
+      summary: View all bookings
+      description: View all bookings
+      operationId: getBookings
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+  /booking:
+    get:
+      tags:
+        - booking
+      summary: View a booking
+      description: View a booking
+      operationId: getBooking
+      parameters:
+        - name: booking_id
+          in: path
+          description: ID of booking
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+    put:
+      tags:
+        - booking
+      summary: Update a booking
+      description: Change the booking information
+      operationId: updateBooking
+      parameters:
+        - name: booking_id
+          in: path
+          description: ID of booking
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: check_in_date
+          in: query
+          description: check_in_date
+          schema:
+            type: string
+            format: date
+        - name: check_out_date
+          in: query
+          description: check_out_date
+          schema:
+            type: string
+            format: date
+        - name: number_of_guests
+          in: query
+          description: number_of_guests
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Booking'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Booking'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '405':
+          description: Invalid input
+    delete:
+      tags:
+        - booking
+      summary: Delete a booking by ID
+      description: Delete a booking
+      operationId: deleteBooking
+      parameters:
+        - name: booking_id
+          in: path
+          description: ID of booking
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+
+  /:
+    get:
+      tags: 
+        - accommodation
+      summary: Get all needed informations in first screen
+      description: all needed informations in first screen will be retrieved
+      operationId: getFirstScreen
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/accommodation"
+        '404':
+          description: Accommodation not found
+  /filtering:
+    post:
+      tags:
+        - accommodation
+      summary: Get all needed informations after filter is used
+      description: all needed informations after filter is used
+      operationId: getAccommodationsByFilter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accommodation_type:
+                  $ref: '#/components/schemas/accommodation_type'
+                price_min:
+                  type: number
+                  example: 10
+                price_max:
+                  type: number
+                  example: 100
+                room_number:
+                  type: number
+                  example: 1
+                bed_number:
+                  type: number
+                  example: 1
+                bathroom_number:
+                  type: number
+                  example: 1
+                building_type:
+                  $ref: '#/components/schemas/building_type'
+                amenity:
+                  $ref: '#/components/schemas/amenity'
+                booking_option:
+                  $ref: '#/components/schemas/booking_option'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/accommodation"
+        '404':
+          description: Accommodation not found
+  /filter:
+    post:
+      tags:
+        - accommodation
+      summary: Get available accommodation number
+      description: get available accommodation number
+      operationId: getAccommodationNumberInFilter
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 100
+        '404':
+          description: Accommodation not found
+  /s:
+    post:
+      tags:
+        - accommodation
+      summary: search result at first screen
+      description: search result at first screen
+      operationId: getSearchResult
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                serach_region:
+                  type: string
+                  example: "europe"
+                date:
+                  type: object
+                  properties:
+                    start_date:
+                      type: string
+                      format: date
+                      example: "2017-07-21"
+                    end_date:
+                      type: string
+                      format: date
+                      example: "2017-07-21"
+                person:
+                  type: object
+                  properties:
+                    adult:
+                      type: number
+                      example: 1
+                    kid:
+                      type: number
+                      example: 1
+                    young_kid:
+                      type: number
+                      example: 1
+                    animal:
+                      type: number
+                      example: 1
+                price_max:
+                  type: number
+                  example: 100
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/accommodation"
+        '404':
+          description: Accommodation not found
+  /wishlist_toggle:
+    post:
+      tags:
+        - accommodation
+      summary: wishlist toggle
+      description: toggle a accommodation as wishlist
+      operationId: toggleWishlist
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accommodation_id:
+                  type: integer
+                  example: 1
+                wanted_wishlist:
+                  type: boolean
+                  example: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  is_in_wishlist:
+                    type: boolean
+                    example: true
+        '404':
+          description: Accommodation not found
+  /rooms/{id}:
+    get:
+      tags:
+        - accommodation
+      summary: get a accommodation's informations
+      description: get a accommodation's informations
+      operationId: getAccommodation
+      parameters:
+       - name: id
+         in: query
+         description: room number for filter
+         required: true
+         schema:
+           type: integer
+           example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accommodation:
+                    $ref: "#/components/schemas/accommodation"
+                  pictures:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/picture"
+                  amenities:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/amenity"
+                  reviews:
+                    type: object
+                    properties:
+                      average:
+                        type: number
+                        example: 4.5
+                      review:
+                        type: array
+                        items:
+                          $ref: "#/components/schemas/review"
+                  user:
+                    $ref: "#/components/schemas/user"
+                  is_in_wishlist:
+                    type: boolean
+                    example: true
+        '404':
+          description: Accommodation not found
+
+components:
+  schemas:
+    Booking:
+      type: object
+      properties:
+        booking_id:
+          type: integer
+          format: int64
+          example: 10
+        status:
+          type: string
+          description: Booking Status
+          example: booked
+          enum:
+            - booked
+            - canceled
+            - completed
+        check_in_date:
+          type: string
+          format: date
+          example: '2023-12-31'
+        check_out_date:
+          type: string
+          format: date
+          example: '2024-01-05'
+        num_of_guests:
+          type: integer
+          example: 3
+        total_price:
+          type: number
+          format: decimal
+          example: 150.00
+        created_at:
+          type: string
+          format: date-time
+          example: '2023-12-31T12:30:45Z'
+        updated_at:
+          type: string
+          format: date-time
+          example: '2023-12-31T15:45:00Z'
+        user_id:
+          type: integer
+          example: 5
+        accommodation_id:
+          type: integer
+          example: 15
+      required:
+        - booking_id
+      xml:
+        name: booking
+    
+    # --------------------------------Ninano's paths area-------------------------------- Delete once we finish -------------------------------------
+    user:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          example: 10
+        created_at:
+          type: string
+          format: date
+        updated_at:
+          type: string
+          format: date
+        deleted_at:
+          type: string
+          format: date
+        email:
+          type: string
+          example: john@email.com
+        password:
+          type: string
+          example: 'fasefSAFSEtat3wtweFWef23tWEsfst32t2#RRWEfdfut7r8e54w36374surhfdHFD'
+        date_of_birth:
+          type: string
+        first_name:
+          type: string
+          example: John
+        last_name:
+          type: string
+          example: James
+        phone:
+          type: string
+          example: '01012345678'
+        is_host:
+          type: boolean
+          example: false
+        profile_picture:
+          type: string
+          example: "fdf345Rgr3rssStT4t3asefSAFSEta4y6RwtweFWef23tt78e54w36fdf374RRWE3w"
+        is_active:
+          type: boolean
+          example: true
+        nationality:
+          type: string
+          example: "kr"
+    accommodation:
+      type: object
+      properties:
+        accommodation_id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "hello"
+        price:
+          type: number
+          example: 300
+        room_number:
+          type: integer
+          example: 1
+        bed_number:
+          type: integer
+          example: 1
+        building_type:
+          $ref: "#/components/schemas/building_type"
+        building_type_name:
+          type: string
+          example: "house"
+        bathroom_number:
+          type: integer
+          example: 1
+        description:
+          type: string
+          example: "home home sweet home"
+        user:
+          $ref: "#/components/schemas/user"
+        person_max_number:
+          type: integer
+          example: 1
+        review_average:
+          type: number
+          example: 1
+        country:
+          $ref: "#/components/schemas/country"
+        region:
+          $ref: "#/components/schemas/region"
+        street:
+          $ref: "#/components/schemas/street"
+        city:
+          $ref: "#/components/schemas/city"
+        house_number:
+          type: string
+          example: "11"
+        zipcode:
+          type: string
+          example: "12345"
+    building_type:
+      type: object
+      properties:
+        building_type_id:
+          type: integer
+          example: 1
+        building_type_name:
+          type: string
+          example: "house"
+    country:
+      type: object
+      properties:
+        country_id:
+          type: integer
+          example: 1
+        country_name:
+          type: string
+          example: "dominica republic"
+        location_category:
+          $ref: "#/components/schemas/location_category"
+    location_category: 
+      type: object
+      properties:
+        location_category_id:
+          type: integer
+          example: 1
+        location_category_name:
+          type: string
+          example: "first"
+    region:
+      type: object
+      properties:
+        region_id:
+          type: integer
+          example: 1
+        region_name:
+          type: string
+          example: "berlin"
+    street:
+      type: object
+      properties:
+        street_id:
+          type: integer
+          example: 1
+        street_name:
+          type: string
+          example: "berlinerplatz"
+    accommodation_type:
+      type: object
+      properties:
+        accommodation_type_id:
+          type: number
+          example: 1
+        accommodation_type_name:
+          type: string
+          example: "room"
+    booking_option:
+      type: object
+      properties:
+        booking_option_id:
+          type: integer
+          example: 1
+        booking_option_name:
+          type: integer
+          example: "option1"
+    amenity:
+      type: object
+      properties:
+        amenity_id:
+          type: integer
+          example: 1
+        amenity_name:
+          type: string
+          example: "wlan"
+        amenity_category:
+          $ref: "#/components/schemas/amenity_category"
+    amenity_category:
+      type: object
+      properties:
+        amenity_category_id:
+          type: integer
+          example: 1
+        amenity_category_name:
+          type: string
+          example: "category1"
+    picture:
+      type: object
+      properties:
+        picture_id:
+          type: integer
+          example: 1
+        picture_path:
+          type: string
+          example: "/src/img/pic_1.jpg"
+    city:
+      type: object
+      properties:
+        city_id:
+          type: string
+          example: "hashdata"
+        city_name:
+          type: string
+          example: "Sydney"
+    review:
+      type: object
+      properties:
+        review_id:
+          type: integer
+          example: 1
+        booking_id:
+          type: integer
+          example: 1
+        rating:
+          type: number
+          example: 3.5
+        comment:
+          type: string
+          example: "nice rooms"
+        created_at:
+          type: string
+          format: date-time
+          example: "2017-07-21T17:32:28Z"
+        user_id:
+          type: integer
+          example: 1
+        accommodation_id:
+          type: integer
+          example: 1
+
+  # requestBodies:
+    
+    
+  # securitySchemes:
+  #   bearerAuth:																															# newly added (by Kyle)
+  #     type: http
+  #     scheme: bearer
+  #     bearerFormat: JWT
+
+  #   airbnb_auth:
+  #     type: oauth2
+  #     flows:
+  #       implicit:
+  #         authorizationUrl: https://petstore3.swagger.io/oauth/authorize    # Change it later
+  #         scopes:
+  #           write:pets: modify pets in your account													# Change it later
+  #           read:pets: read your pets																				# Change it later
+  #   api_key:
+  #     type: apiKey
+  #     name: api_key
+  #     in: header

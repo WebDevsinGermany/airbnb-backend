@@ -1,5 +1,5 @@
 import { Booking } from 'src/booking/entity/booking.entity';
-import { Accommodation } from 'src/accommodation/entity/accommodation.entity';
+import { Accommodation } from 'src/accommodation/entities/accommodation.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
   Entity,
@@ -16,7 +16,6 @@ export class Review {
   @PrimaryGeneratedColumn('uuid')
   review_id: string;
 
-  @Column()
   @CreateDateColumn()
   created_at: Date;
 
@@ -31,7 +30,7 @@ export class Review {
   accommodation: Accommodation;
 
   @ManyToOne(() => User, (user) => user.reviews)
-  @JoinColumn({ name: 'accommodation_id' })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @OneToOne(() => Booking, (booking) => booking.review)
