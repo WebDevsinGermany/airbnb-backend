@@ -105,7 +105,7 @@ export class Accommodation {
   @OneToMany(() => Wishlist, (wishlist) => wishlist.accommodation)
   wishlists: Wishlist[];
 
-  hasWishlist: boolean;
+  hasWishlist: boolean = false;
 
   @OneToMany(() => Booking, (booking) => booking.accommodation)
   bookings: Booking[];

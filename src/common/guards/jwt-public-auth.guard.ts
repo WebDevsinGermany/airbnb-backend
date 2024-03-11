@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
-import { InjectRepository } from '@nestjs/typeorm';
 import { JWT_SECRET } from 'src/user/constants/jwt.constant';
 import { UserService } from 'src/user/services';
 
@@ -15,7 +14,7 @@ export class PAuthGuard implements CanActivate {
   constructor(
     protected readonly reflector: Reflector,
     protected readonly jwtService: JwtService,
-    private userRepo: UserService,
+    private userService: UserService,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -27,7 +26,7 @@ export class PAuthGuard implements CanActivate {
         const decoded = this.jwtService.verify(token, { secret: JWT_SECRET });
         const userId = decoded.user_id;
         console.log('hello', userId); // 사용자 ID 출력
-        const user = await this.userRepo.findOneByUserId(userId);
+        const user = await this.userService.findOneByUserId(userId);
         // 사용자 정보를 Request 객체에 저장
         request.user = user;
 
@@ -40,20 +39,3 @@ export class PAuthGuard implements CanActivate {
     return true;
   }
 }
-
-// @Injectable({ scope: Scope.REQUEST })
-// export class PublicAuthGuard extends PAuthGuard {
-//   constructor(reflector: Reflector, jwtService: JwtService) {
-//     super(reflector, jwtService);
-//   }
-
-//   canActivate(context: ExecutionContext): boolean {
-//     const isPublic = this.reflector.get('isPublic', context.getHandler());
-//     if (isPublic) {
-//       // 토큰 검증 없이 접근 허용
-//       return true;
-//     }
-
-//     return super.canActivate(context);
-//   }
-// }

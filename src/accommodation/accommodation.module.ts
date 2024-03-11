@@ -18,6 +18,7 @@ import { Wishlist } from './entities/wishlist.entity';
 import { AccommodationController } from './controllers/accommodation.controller';
 import { AccommodationService } from './services/accommodation.service';
 import { JwtService } from '@nestjs/jwt';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { JwtService } from '@nestjs/jwt';
       Street,
       Wishlist,
     ]),
+    UserModule,
   ],
   controllers: [AccommodationController],
   providers: [AccommodationService, JwtService],
